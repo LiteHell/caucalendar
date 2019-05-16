@@ -1,0 +1,19 @@
+{
+  "name": "caucalendar",
+  "version": "1.0.0",
+  "description": "CAU Academic Calendar sharing service",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "LiteHell",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "ics": "^2.13.2",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "webdav-server": "^2.4.6"
+  }
+}
