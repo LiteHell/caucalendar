@@ -8,7 +8,8 @@ const Koa = require('koa'),
       CauCalendar = require('./cauacal');
       //webdav = require('webdav-server').v2;
 
-const app = new Koa(),
+const config = require('./config.json'),
+      app = new Koa(),
       //webdavServer = new webdav.WebDAVServer(),
       router = new Router(),
       cauCal = new CauCalendar();
