@@ -1,3 +1,13 @@
 figure {
     text-align: left !important;
 }
+
+/* prevent ugly footer */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+body > section.section {
+    flex: 1;
+}
