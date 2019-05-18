@@ -49,5 +49,5 @@ router.get('/cau.ics', async (ctx, next) => {
 app.use(koaStatic(path.join(__dirname, 'static')));
 app.use(router.routes());
 app.use(router.allowedMethods());
-app.listen(3000);
+app.listen(config.port);
 //app.use(webdav.extensions.express('/webdav', webdavServer));
