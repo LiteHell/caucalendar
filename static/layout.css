@@ -11,3 +11,8 @@ body {
 body > section.section {
     flex: 1;
 }
+
+/* make summary look like link */
+summary {
+    cursor: pointer;
+}
