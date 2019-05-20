@@ -15,7 +15,7 @@ const config = require('./config.json'),
       cauCal = new CauCalendar();
 
 router.get('/cau.ics', async (ctx, next) => {
-    ctx.set('Content-Type', 'text/calendar');
+    ctx.set('Content-Type', 'text/calendar; charset=utf-8');
     let {from, to} = ctx.request.query;
     const fromDefault = 2004, toDefault = (new Date()).getFullYear();
     // set from, to
@@ -42,7 +42,10 @@ router.get('/cau.ics', async (ctx, next) => {
         to = toDefault; 
     
     // return
-    ctx.body = await cauCal.createIcs(from, to);
+    let ics = await cauCal.createIcs(from, to),
+        icsExtPos = ics.indexOf('\n', ics.indexOf('\n') + 1);
+    ics = ics.substring(0, icsExtPos) + 'X-WR-CALNAME:중앙대학교 학사일정\nX-WR-CALDESC:caucalendar.online에서 제공하는 중앙대학교 학사일정' + ics.substring(icsExtPos)
+    ctx.body = ics;
     next();
 });
 //webdavServer.setFileSystem('/', (success) => webdavServer.start())
