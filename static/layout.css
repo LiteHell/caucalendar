@@ -1,18 +1,40 @@
 figure {
     text-align: left !important;
 }
-
-/* prevent ugly footer */
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+.hero.is-cau-background {
+    background: url("img/lucaus2019.JPG");
+    background-repeat: space;
+    filter: opacity(0.7);
 }
-body > section.section {
-    flex: 1;
+.hero.is-cau-background .hero-body .title, .hero.is-cau-background .hero-body .subtitle {
+    color: white;
 }
-
-/* make summary look like link */
-summary {
-    cursor: pointer;
+.hero.is-cau-background .hero-foot .footer {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+}
+.calendar-service-buttons a.button {
+    height: initial;
+}
+.calendar-service-buttons .inner .is-service-icon {
+    font-size: 5rem;
+}
+.calendar-service-buttons .inner .service-name {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+}
+.calendar-service-buttons .inner {
+    padding: 1rem;
+}
+.is-google-color {
+    background: #4285F4;
+    color: white;
+}
+.is-microsoft-color {
+    background:#00a4ef;
+    color: white;
+}
+.is-apple-color {
+    background: white;
+    color: black;
 }
