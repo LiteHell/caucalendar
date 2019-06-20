@@ -3,7 +3,8 @@ figure {
 }
 .hero.is-cau-background {
     background: url("img/lucaus2019.JPG");
-    background-repeat: space;
+    background-repeat: no-repeat;
+    background-size: cover;
     filter: opacity(0.7);
 }
 .hero.is-cau-background .hero-body .title, .hero.is-cau-background .hero-body .subtitle {
