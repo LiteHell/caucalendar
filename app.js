@@ -20,7 +20,7 @@ initDatabase(config.database);
 router.get('/cau.ics', async (ctx, next) => {
     ctx.set('Content-Type', 'text/calendar; charset=utf-8');
     let {from, to} = ctx.request.query;
-    const fromDefault = 2004, toDefault = (new Date()).getFullYear();
+    const fromDefault = 2004, toDefault = (new Date()).getFullYear() + 1;
     // set from, to
     if (from)
         from = Number(from);

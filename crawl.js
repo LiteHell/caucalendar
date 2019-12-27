@@ -5,7 +5,7 @@ const CauCalendar = require('./cauacal'),
 (async () => {
     initDatabase(config.database);
     const cauCal = new CauCalendar();
-    const yearFrom = 2004, yearTo = (new Date()).getFullYear();
+    const yearFrom = 2004, yearTo = (new Date()).getFullYear() + 1;
     let schedules = [];
     for (let year = yearFrom; year <= yearTo; year++) {
         schedules = schedules.concat(await cauCal.getSchedules(year));
