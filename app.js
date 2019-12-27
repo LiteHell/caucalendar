@@ -6,7 +6,7 @@ const Koa = require('koa'),
       path = require('path'),
       Router = require('koa-router'),
       koaStatic = require('koa-static'),
-      Op = (require('Sequelize')).Op,
+      Op = (require('sequelize')).Op,
       initDatabase = require('./database');
       //webdav = require('webdav-server').v2;
 
