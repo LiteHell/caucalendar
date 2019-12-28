@@ -2,6 +2,10 @@ const CauCalendar = require('./cauacal'),
       initDatabase = require('./database'),
       config = require('./config.json');
 
+let makeKSTString = (dateNumbers) => {
+    return `${dateNumbers[0]}-${dateNumbers[1].toString().padStart(2, '0')}-${dateNumbers[2].toString().padStart(2, '0')}T12:00:00+09:00`;
+}
+
 (async () => {
     initDatabase(config.database);
     const cauCal = new CauCalendar();
@@ -11,8 +15,8 @@ const CauCalendar = require('./cauacal'),
         schedules = schedules.concat(await cauCal.getSchedules(year));
     }
     schedules = schedules.map(i => {
-        i.start = new Date(i.start[0], i.start[1], i.start[2]);
-        i.end = new Date(i.end[0], i.end[1], i.end[2]);
+        i.start = new Date(makeKSTString(i.start));
+        i.end = new Date(makeKSTString(i.end));
         return i;
     });
     await sequelize.transaction(async t => {

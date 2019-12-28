@@ -8,11 +8,11 @@ module.exports = async connUrl => {
             allowNull: false
         },
         start: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false
         },
         end: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false
         },
         uid: {

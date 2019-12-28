@@ -15,6 +15,10 @@ const config = require('./config.json'),
       //webdavServer = new webdav.WebDAVServer(),
       router = new Router();
 
+const dateToICSDate = (dateObj) => {
+    return [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDate()];
+}
+
 initDatabase(config.database);
 
 router.get('/cau.ics', async (ctx, next) => {
@@ -58,8 +62,8 @@ router.get('/cau.ics', async (ctx, next) => {
     });
     events = events.map(i => {
         return {
-            start: i.start.split('-'),
-            end: i.end.split('-'),
+            start: dateToICSDate(i.start),
+            end: dateToICSDate(i.end),
             uid: i.uid,
             title: i.title
         };
