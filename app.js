@@ -7,10 +7,11 @@ const Koa = require('koa'),
       Router = require('koa-router'),
       koaStatic = require('koa-static'),
       Op = (require('sequelize')).Op,
-      initDatabase = require('./database');
+      initDatabase = require('./database'),
+      crawl = require('./crawl');
       //webdav = require('webdav-server').v2;
 
-const config = require('./config.json'),
+const config = require('./data/config.json'),
       app = new Koa(),
       //webdavServer = new webdav.WebDAVServer(),
       router = new Router();
@@ -73,7 +74,7 @@ router.get('/cau.ics', async (ctx, next) => {
     let {error: icsError, value: icsResult} = ics.createEvents(events);
     if (icsError)
         throw icsError;
-        console.log(icsResult);
+        //console.log(icsResult);
 
     // return
     let icsExtPos = icsResult.indexOf('\n', icsResult.indexOf('\n') + 1);
@@ -87,3 +88,7 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 app.listen(config.port);
 //app.use(webdav.extensions.express('/webdav', webdavServer));
+
+crawl().then(() => {
+    setInterval(crawl, 1000 * 60 * 60 * 3);
+})

@@ -1,13 +1,10 @@
-const CauCalendar = require('./cauacal'),
-      initDatabase = require('./database'),
-      config = require('./config.json');
+const CauCalendar = require('./cauacal');
 
 let makeKSTString = (dateNumbers) => {
     return `${dateNumbers[0]}-${dateNumbers[1].toString().padStart(2, '0')}-${dateNumbers[2].toString().padStart(2, '0')}T12:00:00+09:00`;
 }
 
-(async () => {
-    initDatabase(config.database);
+module.exports = async () => {
     const cauCal = new CauCalendar();
     const {fromDefault: yearFrom, toDefault: yearTo} = require('./yearDefaults')();
     let schedules = [];
@@ -26,4 +23,4 @@ let makeKSTString = (dateNumbers) => {
         }, {transaction: t});
         await Event.bulkCreate(schedules, {transaction: t});
     });
-})();
+};
