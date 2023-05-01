@@ -9,7 +9,7 @@
   "author": "LiteHell",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "ics": "^2.13.2",
     "koa": "^2.7.0",
     "koa-router": "^7.4.0",
