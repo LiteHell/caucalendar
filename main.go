@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strconv"
 	"strings"
+	"time"
 )
 
 type cauCalendarHandler struct {
@@ -21,10 +23,36 @@ func handleIntervalError(resp http.ResponseWriter, req *http.Request, status int
 // ServeHTTP implements http.Handler.
 func (handler cauCalendarHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	if req.URL.Path == "/cau.ics" {
-		_, yearTo := DefaultYear()
-		schedules, err := GetCAUSchedules(yearTo)
+		defaultYearFrom, defaultYearTo := DefaultYear()
+		yearFrom, yearTo := defaultYearFrom, defaultYearTo
+		if req.URL.Query().Get("from") != "" {
+			var err error
+			yearFrom, err = strconv.Atoi(req.URL.Query().Get("from"))
+			if err != nil || yearFrom < defaultYearFrom {
+				yearFrom = defaultYearFrom
+			}
+		}
+
+		if req.URL.Query().Get("to") != "" {
+			var err error
+			yearTo, err = strconv.Atoi(req.URL.Query().Get("to"))
+			if err != nil || yearTo > defaultYearTo {
+				yearTo = defaultYearTo
+			}
+		}
+
+		if yearFrom > yearTo {
+			yearFrom, yearTo = yearTo, yearFrom
+		}
+
+		tz, _ := time.LoadLocation("Asia/Seoul")
+		from := time.Date(yearFrom, 1, 1, 0, 0, 0, 0, tz)
+		to := time.Date(yearTo, 12, 31, 23, 59, 59, 59, tz)
+
+		schedules, err := readRows(from, to)
 		if err != nil {
 			handleIntervalError(resp, req, 500, "Internal server error")
+			fmt.Fprintf(os.Stderr, "Error on reading database: %s\n", err)
 			return
 		}
 
@@ -67,7 +95,36 @@ func main() {
 	server.Handler = cauCalendarHandler{}
 	server.Addr = ":8080"
 
-	err := server.ListenAndServe()
+	err := initializeDB()
+
+	if err != nil {
+		panic(
+			fmt.Errorf("Database initialization failure: %s", err))
+	}
+
+	fmt.Println("Performing initial crawlling...")
+	start, end := DefaultYear()
+	events := []CAUSchedule{}
+	for i := start; i <= end; i++ {
+		fmt.Printf("Working on year %d\n", i)
+		schedules, err := GetCAUSchedules(i)
+		if err != nil {
+			panic(fmt.Errorf("Initial crawlling failure on year %d: %s", i, err))
+		}
+
+		events = append(events, *schedules...)
+	}
+
+	fmt.Println("Inserting into database...")
+	err = insertRows(&events)
+	if err != nil {
+		panic(fmt.Errorf("Initial database insertion failure: %s", err))
+	}
+
+	fmt.Println("Initial preparation Complete!")
+
+	fmt.Printf("Listening on %s\n", server.Addr)
+	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		fmt.Fprintln(os.Stderr, err)
 	}
