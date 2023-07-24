@@ -107,6 +107,9 @@ func main() {
 
 	fmt.Println("Initial preparation Complete!")
 
+	fmt.Println("Spawning crawl worker...")
+	setupCrawller()
+
 	fmt.Printf("Listening on %s\n", server.Addr)
 	err = server.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
