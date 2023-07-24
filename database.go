@@ -22,7 +22,7 @@ func initializeDB() error {
 		return err
 	}
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS schedules (title TEXT, start INTEGER, end TEXT)")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS schedules (title TEXT, start INTEGER, end TEXT, UNIQUE (title, start, end))")
 
 	if err != nil {
 		return err

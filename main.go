@@ -116,7 +116,8 @@ func main() {
 	}
 
 	fmt.Println("Inserting into database...")
-	err = insertRows(&events)
+	unique := getUniqueOnly(&events)
+	err = insertRows(&unique)
 	if err != nil {
 		panic(fmt.Errorf("Initial database insertion failure: %s", err))
 	}
