@@ -18,11 +18,11 @@ type CAUSchedule struct {
 type cauScheduleRawItem struct {
 	SUBJECT string
 	START_Y string
-	START_M int
-	START_D int
+	START_M string
+	START_D string
 	END_Y   string
-	END_M   int
-	END_D   int
+	END_M   string
+	END_D   string
 }
 
 type cauScheduleRawResponse struct {
@@ -60,10 +60,14 @@ func GetCAUSchedules(year int) (*[]CAUSchedule, error) {
 	result := make([]CAUSchedule, len(apiResp.Data))
 	for idx, i := range apiResp.Data {
 		startYear, _ := strconv.Atoi(i.START_Y)
+		startMonth, _ := strconv.Atoi(i.START_M)
+		startDay, _ := strconv.Atoi(i.START_D)
 		endYear, _ := strconv.Atoi(i.END_Y)
+		endMonth, _ := strconv.Atoi(i.END_M)
+		endDay, _ := strconv.Atoi(i.END_D)
 
-		result[idx].StartDate = time.Date(startYear, time.Month(i.START_M), i.START_D, 0, 0, 0, 0, tz)
-		result[idx].EndDate = time.Date(endYear, time.Month(i.END_M), i.END_D, 0, 0, 0, 0, tz)
+		result[idx].StartDate = time.Date(startYear, time.Month(startMonth), startDay, 0, 0, 0, 0, tz)
+		result[idx].EndDate = time.Date(endYear, time.Month(endMonth), endDay, 0, 0, 0, 0, tz)
 		result[idx].Title = i.SUBJECT
 	}
 
