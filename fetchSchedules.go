@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func crawlYear(year int, resultCh chan<- *[]CAUSchedule) {
+func fetchYear(year int, resultCh chan<- *[]CAUSchedule) {
 
 	fmt.Printf("Working on year %d\n", year)
 	schedules, err := GetCAUSchedules(year)
@@ -13,12 +13,12 @@ func crawlYear(year int, resultCh chan<- *[]CAUSchedule) {
 	resultCh <- schedules
 }
 
-func crawlAllYears() {
+func fetchAllYears() {
 	start, end := DefaultYear()
 	events := []CAUSchedule{}
 	resultsCh := make(chan *[]CAUSchedule, end-start+1)
 	for i := start; i <= end; i++ {
-		go crawlYear(i, resultsCh)
+		go fetchYear(i, resultsCh)
 	}
 
 	for i := start; i <= end; i++ {

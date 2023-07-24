@@ -103,7 +103,7 @@ func main() {
 	}
 
 	fmt.Println("Performing initial crawlling...")
-	crawlAllYears()
+	fetchAllYears()
 
 	fmt.Println("Initial preparation Complete!")
 
