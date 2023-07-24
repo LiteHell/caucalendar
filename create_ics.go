@@ -1,16 +1,20 @@
 package main
 
 import (
-	"crypto/md5"
+	"crypto/sha1"
 	"fmt"
 	"time"
 )
 
 func generateUid(schedule *CAUSchedule) string {
 	return fmt.Sprintf("%x@caucalendar.online",
-		md5.Sum([]byte(fmt.Sprintf("%d_%d_%s",
-			schedule.StartDate.Unix(),
-			schedule.EndDate.Unix(),
+		sha1.Sum([]byte(fmt.Sprintf("%d_%d_%d%d_%d_%d%s",
+			schedule.StartDate.Year(),
+			schedule.StartDate.Month(),
+			schedule.StartDate.Day(),
+			schedule.EndDate.Year(),
+			schedule.EndDate.Month(),
+			schedule.EndDate.Day(),
 			schedule.Title))),
 	)
 }
