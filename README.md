@@ -6,19 +6,7 @@
 ## How to build and launch
 ```
 docker build -t caucalendar https://github.com/LiteHell/caucalendar.git
-docker run -v /PATH/TO/DATA/PATH:/app/data -p PORT:PORT -d caucalendar
+docker run -p PORT:8080 -d caucalendar
 ```
 
-## Configuration file
-You need configuration file `config.json` inside data directory.
-
-```
-{
-    "port": 80,
-    "database": "sqlite://debug.db"
-}
-```
-|   name   |        definition       |
-|----------|-------------------------|
-|   port   | http port for listening |
-| database | database connection uri |
+위에서 PORT를 원하는 포트번호로 바꾸면 됩니다.

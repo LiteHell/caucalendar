@@ -1,10 +1,13 @@
-FROM node:14-alpine
-
-VOLUME [ "/app/data" ]
+FROM golang:1.21-rc-alpine3.18
 
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
 
-COPY . ./
-CMD [ "node", "./app.js" ]
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+
+COPY *.go ./
+RUN go build -v -o /app/app
+
+COPY static ./static
+
+CMD ["/app/app"]
