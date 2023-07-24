@@ -103,24 +103,7 @@ func main() {
 	}
 
 	fmt.Println("Performing initial crawlling...")
-	start, end := DefaultYear()
-	events := []CAUSchedule{}
-	for i := start; i <= end; i++ {
-		fmt.Printf("Working on year %d\n", i)
-		schedules, err := GetCAUSchedules(i)
-		if err != nil {
-			panic(fmt.Errorf("Initial crawlling failure on year %d: %s", i, err))
-		}
-
-		events = append(events, *schedules...)
-	}
-
-	fmt.Println("Inserting into database...")
-	unique := getUniqueOnly(&events)
-	err = insertRows(&unique)
-	if err != nil {
-		panic(fmt.Errorf("Initial database insertion failure: %s", err))
-	}
+	crawlAllYears()
 
 	fmt.Println("Initial preparation Complete!")
 
