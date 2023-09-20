@@ -7,14 +7,15 @@ import (
 )
 
 func generateUid(schedule *CAUSchedule) string {
+	kst, _ := time.LoadLocation("Asia/Seoul")
 	return fmt.Sprintf("%x@calendar.puang.network",
 		sha1.Sum([]byte(fmt.Sprintf("%d_%d_%d%d_%d_%d%s",
-			schedule.StartDate.Year(),
-			schedule.StartDate.Month(),
-			schedule.StartDate.Day(),
-			schedule.EndDate.Year(),
-			schedule.EndDate.Month(),
-			schedule.EndDate.Day(),
+			schedule.StartDate.In(kst).Year(),
+			schedule.StartDate.In(kst).Month(),
+			schedule.StartDate.In(kst).Day(),
+			schedule.EndDate.In(kst).Year(),
+			schedule.EndDate.In(kst).Month(),
+			schedule.EndDate.In(kst).Day(),
 			schedule.Title))),
 	)
 }
@@ -46,13 +47,14 @@ func GenerateIcs(schedules *[]CAUSchedule) string {
 			"END:VTIMEZONE\n"
 
 	creationTimestamp := time.Now().Format("20060102T150405Z")
+	kst, _ := time.LoadLocation("Asia/Seoul")
 
 	for _, schedule := range *schedules {
 		vEventEndData := ""
 		if !schedule.EndDate.Equal(schedule.StartDate) {
 			vEventEndData = fmt.Sprintf(
 				"DTEND;TZID=Asia/Seoul;VALUE=DATE:%s\n",
-				schedule.EndDate.Format("20060102"),
+				schedule.EndDate.In(kst).Format("20060102"),
 			)
 		}
 		result +=
@@ -66,7 +68,7 @@ func GenerateIcs(schedules *[]CAUSchedule) string {
 				generateUid(&schedule),
 				schedule.Title,
 				creationTimestamp,
-				schedule.StartDate.Format("20060102"),
+				schedule.StartDate.In(kst).Format("20060102"),
 			)
 	}
 
