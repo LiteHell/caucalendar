@@ -20,15 +20,30 @@ func generateUid(schedule *CAUSchedule) string {
 }
 
 func GenerateIcs(schedules *[]CAUSchedule) string {
-	// Start VCALENDAR
-	result := "BEGIN:VCALENDAR\n" +
-		"VERSION:2.0\n" +
-		"X-WR-CALNAME:중앙대학교 학사일정\n" +
-		"X-WR-CALDESC:calendar.puang.network에서 제공하는 중앙대학교 학사일정\n" +
-		"CALSCALE:GREGORIAN\n" +
-		"PRODID:adamgibbons/ics\n" +
-		"METHOD:PUBLISH\n" +
-		"X-PUBLISHED-TTL:PT1H\n"
+	result :=
+		// Start VCALENDAR
+		"BEGIN:VCALENDAR\n" +
+			"VERSION:2.0\n" +
+			"TIMEZONE-ID:Asia/Seoul\n" +
+			"X-WR-TIMEZONE:Asia/Seoul\n" +
+			"X-WR-CALNAME:중앙대학교 학사일정\n" +
+			"X-WR-CALDESC:calendar.puang.network에서 제공하는 중앙대학교 학사일정\n" +
+			"CALSCALE:GREGORIAN\n" +
+			"PRODID:adamgibbons/ics\n" +
+			"METHOD:PUBLISH\n" +
+			"X-PUBLISHED-TTL:PT1H\n" +
+			// Start VTIMEZONE
+			"BEGIN:VTIMEZONE\n" +
+			"TZID:Asia/Seoul\n" +
+			"TZURL:http://tzurl.org/zoneinfo-outlook/Asia/Seoul\n" +
+			"X-LIC-LOCATION:Asia/Seoul\n" +
+			"BEGIN:STANDARD\n" +
+			"TZOFFSETFROM:+0900\n" +
+			"TZOFFSETTO:+0900\n" +
+			"TZNAME:KST\n" +
+			"DTSTART:19700101T000000\n" +
+			"END:STANDARD\n" +
+			"END:VTIMEZONE\n"
 
 	creationTimestamp := time.Now().Format("20060102T150405Z")
 
@@ -36,7 +51,7 @@ func GenerateIcs(schedules *[]CAUSchedule) string {
 		vEventEndData := ""
 		if !schedule.EndDate.Equal(schedule.StartDate) {
 			vEventEndData = fmt.Sprintf(
-				"DTEND;VALUE=DATE:%s\n",
+				"DTEND;TZID=Asia/Seoul;VALUE=DATE:%s\n",
 				schedule.EndDate.Format("20060102"),
 			)
 		}
@@ -45,7 +60,7 @@ func GenerateIcs(schedules *[]CAUSchedule) string {
 				"UID:%s\n"+
 				"SUMMARY:%s\n"+
 				"DTSTAMP:%s\n"+
-				"DTSTART;VALUE=DATE:%s\n"+
+				"DTSTART;TZID=Asia/Seoul;VALUE=DATE:%s\n"+
 				vEventEndData+
 				"END:VEVENT\n",
 				generateUid(&schedule),
