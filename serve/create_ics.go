@@ -4,9 +4,11 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"time"
+
+	"litehell.info/caucalendar/crawl/crawl"
 )
 
-func generateUid(schedule *CAUSchedule) string {
+func generateUid(schedule *crawl.CAUSchedule) string {
 	kst, _ := time.LoadLocation("Asia/Seoul")
 	return fmt.Sprintf("%x@calendar.puang.network",
 		sha1.Sum([]byte(fmt.Sprintf("%d_%d_%d%d_%d_%d%s",
@@ -20,7 +22,7 @@ func generateUid(schedule *CAUSchedule) string {
 	)
 }
 
-func GenerateIcs(schedules *[]CAUSchedule) string {
+func GenerateIcs(schedules *[]crawl.CAUSchedule) string {
 	result :=
 		// Start VCALENDAR
 		"BEGIN:VCALENDAR\n" +

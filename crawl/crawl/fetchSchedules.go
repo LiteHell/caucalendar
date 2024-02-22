@@ -1,4 +1,4 @@
-package main
+package crawl
 
 import "fmt"
 
@@ -13,7 +13,7 @@ func fetchYear(year int, resultCh chan<- *[]CAUSchedule) {
 	resultCh <- schedules
 }
 
-func fetchAllYears() {
+func FetchAllYears() *[]CAUSchedule {
 	start, end := DefaultYear()
 	events := []CAUSchedule{}
 	resultsCh := make(chan *[]CAUSchedule, end-start+1)
@@ -27,9 +27,5 @@ func fetchAllYears() {
 	}
 
 	unique := getUniqueOnly(&events)
-	fmt.Printf("Inserting into database (%d events)...\n", len(unique))
-	err := insertRows(&unique)
-	if err != nil {
-		panic(fmt.Errorf("Initial database insertion failure: %s", err))
-	}
+	return &unique
 }

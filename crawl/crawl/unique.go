@@ -1,4 +1,4 @@
-package main
+package crawl
 
 func getUniqueOnly(schedules *[]CAUSchedule) []CAUSchedule {
 	unique := make([]CAUSchedule, len(*schedules))

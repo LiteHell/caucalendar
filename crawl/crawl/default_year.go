@@ -1,4 +1,4 @@
-package main
+package crawl
 
 import "time"
 
